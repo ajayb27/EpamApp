@@ -11,42 +11,43 @@
         android:paddingTop="0dip"
         android:paddingBottom="0dip"
         tools:context="MainActivity"
-        android:background="@color/green">
+        android:background="@color/white">
+
         <RelativeLayout
             android:id="@+id/msw_welcome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            android:gravity="center_vertical|center_horizontal|center"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:visibility="gone"
             tools:ignore="RtlHardcoded">
+
             <ImageView
                 android:id="@+id/msw_logo"
                 android:layout_width="275dip"
                 android:layout_height="100dip"
-                android:src="@mipmap/ic_launcher"
-                android:gravity="center_vertical|center_horizontal|center"
-                android:contentDescription="Image"
+                android:layout_centerInParent="true"
                 android:layout_gravity="top"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:contentDescription="Image"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:src="@mipmap/ic_logo" />
 
             <TextView
                 android:id="@+id/msw_loading_text"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|center_horizontal|center"
                 android:layout_width="match_parent"
-                tools:ignore="NotSibling"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/msw_logo"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="26dp"
+                android:gravity="center_vertical|center_horizontal|center"
                 android:text="@string/app_name"
+                android:textColor="?android:attr/textColorTertiary"
                 android:textSize="18sp"
                 android:textStyle="normal|bold"
-                android:textColor="?android:attr/textColorTertiary"
-                android:layout_marginTop="26dp"
-                android:layout_below="@+id/msw_logo"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                tools:ignore="NotSibling" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -73,11 +74,12 @@
                 android:progressDrawable="@drawable/progress_style"
                 android:visibility="visible" />
         </RelativeLayout>
+
         <WebView
             android:id="@+id/msw_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:visibility="gone" />
+            android:visibility="visible" />
         <ProgressBar
             android:id="@+id/msw_progress_outer"
             style="@android:style/Widget.ProgressBar.Horizontal"
@@ -88,5 +90,13 @@
             android:layout_marginBottom="722dp"
             android:progressDrawable="@drawable/progress_style"
             android:visibility="gone" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loadingbar"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
