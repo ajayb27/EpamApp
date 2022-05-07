@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     WebView swvp_view;
     ProgressBar swvp_progress;
-    ProgressBar loadingBar;
+//    ProgressBar loadingBar;
     TextView swvp_loading_text;
     NotificationManager swvp_notification;
     Notification swvp_notification_new;
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         swvp_view = findViewById(R.id.msw_view);
-        loadingBar = findViewById(R.id.loadingbar);
+//        loadingBar = findViewById(R.id.loadingbar);
 
         final SwipeRefreshLayout pullfresh = findViewById(R.id.pullfresh);
         if (SngineApp_PULLFRESH) {
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             //Getting webview rendering progress
             @Override
             public void onProgressChanged(WebView view, int p) {
-                loadingBar.setVisibility(View.VISIBLE);
+//                loadingBar.setVisibility(View.VISIBLE);
                 if (SngineApp_PBAR) {
                     swvp_progress.setProgress(p);
                     if (p <= 10) {
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (p == 100) {
                         swvp_progress.setProgress(0);
                         swvp_progress.setVisibility(View.INVISIBLE);
-                        loadingBar.setVisibility(View.GONE);
+//                        loadingBar.setVisibility(View.GONE);
                     }
                 }
             }
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
     //Setting activity layout visibility
     private class Callback extends WebViewClient {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            loadingBar.setVisibility(View.VISIBLE);
+//            loadingBar.setVisibility(View.VISIBLE);
             swvp_progress.setVisibility(View.VISIBLE);
             swvp_progress.setProgress(0);
         }
