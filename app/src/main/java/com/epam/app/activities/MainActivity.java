@@ -13,6 +13,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -64,7 +65,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private String swvp_cam_message;
     private ValueCallback<Uri> swvp_file_message;
     private ValueCallback<Uri[]> swvp_file_path;
-    private final static int swvp_file_req = 1;
+    private final static int swvp_file_req = 127;
 
     private final static int loc_perm = 1;
     private final static int file_perm = 2;
@@ -151,25 +154,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
-            Uri[] results = null;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+        Uri[] results = null;
+        Log.d("ajayfile","photoFile OA0");
+        if (Build.VERSION.SDK_INT>=21) {
+            Log.d("ajayfile","photoFile OA0 if code "+resultCode+" != "+Activity.RESULT_OK);
             if (resultCode == Activity.RESULT_OK) {
+                Log.d("ajayfile", "photoFile OA01");
                 if (requestCode == swvp_file_req) {
+                    Log.d("ajayfile", "photoFile OA02");
                     if (null == swvp_file_path) {
                         return;
                     }
                     if (intent == null || intent.getData() == null) {
+                        Log.d("ajayfile", "photoFile OA1");
                         if (swvp_cam_message != null) {
+                            Log.d("ajayfile", "photoFile OA2");
                             results = new Uri[]{Uri.parse(swvp_cam_message)};
                         }
                     } else {
+                        Log.d("ajayfile", "photoFile OA3");
                         String dataString = intent.getDataString();
                         if (dataString != null) {
-                            results = new Uri[]{ Uri.parse(dataString) };
+                            Log.d("ajayfile", "photoFile OA4");
+                            results = new Uri[]{Uri.parse(dataString)};
                         } else {
-                            if(SngineApp_MULFILE) {
+                            if (SngineApp_MULFILE) {
                                 if (intent.getClipData() != null) {
                                     final int numSelectedFiles = intent.getClipData().getItemCount();
                                     results = new Uri[numSelectedFiles];
@@ -182,16 +193,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-            swvp_file_path.onReceiveValue(results);
-            swvp_file_path = null;
         } else {
+            Log.d("ajayfile","else OA");
             if (requestCode == swvp_file_req) {
+                Log.d("ajayfile","else OA1");
                 if (null == swvp_file_message) return;
                 Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
                 swvp_file_message.onReceiveValue(result);
                 swvp_file_message = null;
             }
         }
+        if (swvp_file_path!=null)
+            swvp_file_path.onReceiveValue(results);
+        swvp_file_path = null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -331,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
         swvp_view.setWebChromeClient(new WebChromeClient() {
             //Handling input[type="file"]
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams){
+                Log.d("ajayfile","FileChooserParams: "+fileChooserParams.isCaptureEnabled()+", "+fileChooserParams.getMode()+", "+ Arrays.toString(fileChooserParams.getAcceptTypes()));
                 if(check_permission(2) && check_permission(3)) {
                     if (SngineApp_FUPLOAD) {
                         if (swvp_file_path != null) {
@@ -338,20 +353,37 @@ public class MainActivity extends AppCompatActivity {
                         }
                         swvp_file_path = filePathCallback;
                         Intent takePictureIntent = null;
-                        if (SngineApp_CAMUPLOAD) {
+                        if (SngineApp_CAMUPLOAD && fileChooserParams.isCaptureEnabled()) {
+                            Log.d("ajayfile","photoFile");
                             takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            if (takePictureIntent.resolveActivity(MainActivity.this.getPackageManager()) != null) {
+                            Log.d("ajayfile","photoFile before if : "+takePictureIntent);
+                            if (takePictureIntent.resolveActivity   (MainActivity.this.getPackageManager()) != null) {
+                                Log.d("ajayfile","photoFile in if");
                                 File photoFile = null;
                                 try {
+                                    Log.d("ajayfile","photoFile1");
                                     photoFile = create_image();
+                                    Log.d("ajayfile","photoFile2");
                                     takePictureIntent.putExtra("PhotoPath", swvp_cam_message);
                                 } catch (IOException ex) {
+                                    Log.d("ajayfile","photoFile Exception");
                                     Log.e(TAG, "Image file creation failed", ex);
                                 }
                                 if (photoFile != null) {
+                                    Log.d("ajayfile","photoFile3");
                                     swvp_cam_message = "file:" + photoFile.getAbsolutePath();
                                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                                    if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                                        takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    } else {
+                                        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                                        for (ResolveInfo resolveInfo : resInfoList) {
+                                            String packageName = resolveInfo.activityInfo.packageName;
+                                            grantUriPermission(packageName, Uri.fromFile(photoFile), Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                        }
+                                    }
                                 } else {
+                                    Log.d("ajayfile","photoFile4");
                                     takePictureIntent = null;
                                 }
                             }
@@ -372,7 +404,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
-                        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+                        if (!fileChooserParams.isCaptureEnabled())
+                            chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+                        else
+                            chooserIntent.putExtra(Intent.EXTRA_INTENT, new Intent());
                         chooserIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.fl_chooser));
                         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
                         startActivityForResult(chooserIntent, swvp_file_req);
@@ -686,7 +721,9 @@ public class MainActivity extends AppCompatActivity {
         String file_name    = new SimpleDateFormat("yyyy_mm_ss").format(new Date());
         String new_name     = "file_"+file_name+"_";
         File sd_directory   = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(new_name, ".jpg", sd_directory);
+        Log.d("ajayfile","file : "+sd_directory);
+//        return File.createTempFile(new_name, ".jpg", sd_directory);
+        return new File(sd_directory+"/"+new_name+".jpg");
     }
 
     //Launching app rating dialoge [developed by github.com/hotchemi]

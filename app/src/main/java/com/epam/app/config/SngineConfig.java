@@ -5,7 +5,8 @@ public class SngineConfig {
     /* -- CONFIG VARIABLES -- */
 
     //complete URL of your Sngine website
-    public static String Sngine_URL          = "https://fineuploader.com/demos.html";
+    public static String Sngine_URL          = "http://myvillagekart.com";
+//    public static String Sngine_URL          = "https://fineuploader.com/demos.html";
 
 
     /* -- PERMISSION VARIABLES -- */
