@@ -34,7 +34,7 @@ public class SngineConfig {
     public static boolean SngineApp_RATINGS     = true;
 
     // pull refresh current url
-    public static boolean SngineApp_PULLFRESH	 = true;
+    public static boolean SngineApp_PULLFRESH	 = false;
 
     // show progress bar in app
     public static boolean SngineApp_PBAR        = true;
