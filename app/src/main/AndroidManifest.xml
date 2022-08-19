@@ -53,7 +53,27 @@
         android:roundIcon="@mipmap/ic_logo_mvk_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.EpamApp" >
+        android:theme="@style/Theme.EpamApp"
+        android:name=".application.MyApplication">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true" >
@@ -72,6 +92,14 @@
 <!--                <data android:scheme="http" />-->
 <!--            </intent-filter>-->
         </activity>
+
+        <service
+            android:name=".api.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

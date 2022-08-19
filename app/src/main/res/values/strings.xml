@@ -17,4 +17,10 @@
     <string name="went_wrong">Something Went Wrong!</string>
     <string name="check_connection">Please check your Network Connection!</string>
     <string name="share_w_friends">Share with your Friends</string>
+
+    <string name="msg_token_fmt">token</string>
+
+    <string name="msg_subscribed">SUBSCRIBED</string>
+    <string name="msg_subscribe_failed">SUBSCRIPTION FAILED</string>
+    <string name="default_notification_channel_id">FIRST</string>
 </resources>

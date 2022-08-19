@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "965777554135",
+    "project_id": "epamapp-5535b",
+    "storage_bucket": "epamapp-5535b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965777554135:android:684d238ba1215442650e92",
+        "android_client_info": {
+          "package_name": "com.epam.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965777554135-g8321cfcj50qechlnigi0qa15d33msit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0k3VERTQ7rGk8N-6QQa_HmBxqLeqyBw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965777554135-g8321cfcj50qechlnigi0qa15d33msit.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
