@@ -78,7 +78,7 @@ public class MyApplication extends Application {
 
     }
 
-    public void triggerNotification(Class targetNotificationActivity, String channelId, String title, String text, String bigText, boolean autoCancel, int notificationId) {
-        myNotificationManager.triggerNotification(targetNotificationActivity, channelId, title, text, bigText, autoCancel, notificationId);
+    public void triggerNotification(Class targetNotificationActivity, String channelId, String title, String text, String bigText, boolean autoCancel, int notificationId, String url) {
+        myNotificationManager.triggerNotification(targetNotificationActivity, channelId, title, text, bigText, autoCancel, notificationId, url);
     }
 }

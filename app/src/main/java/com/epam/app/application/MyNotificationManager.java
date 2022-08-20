@@ -9,6 +9,7 @@ import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -51,11 +52,15 @@ public class MyNotificationManager {
         }
     }
 
-    public void triggerNotification (Class targerNotificationActivity,String channelId,String title,String text,String bigText,boolean autoCancel,int notificationId) {
-        Intent intent = new Intent(context,targerNotificationActivity);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,13,intent,0);
+    public void triggerNotification (Class targetNotificationActivity,String channelId,String title,String text,String bigText,boolean autoCancel,int notificationId, String url) {
+        Intent intent = new Intent(context,targetNotificationActivity);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if (url != null)
+//            intent.putExtra("url",url);
+            intent.setData(Uri.parse(url));
+        Log.d("testUrl","testUrl manager : "+url);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,13,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 

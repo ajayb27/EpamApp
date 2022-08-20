@@ -49,7 +49,7 @@ public class SngineConfig {
     public static boolean SngineApp_OFFLINE     = false;
 
     // open external url with default browser instead of app webview
-    public static boolean SngineApp_EXTURL      = true;
+    public static boolean SngineApp_EXTURL      = false;
 
 
     /* -- SECURITY VARIABLES -- */

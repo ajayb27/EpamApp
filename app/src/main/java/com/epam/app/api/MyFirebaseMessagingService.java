@@ -22,7 +22,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.i(debug,"Message Received");
-        ((MyApplication)getApplication()).triggerNotification(MainActivity.class,"FIRST",remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getBody(),true,14);
+        String url = remoteMessage.getData().get("key1");
+        Log.d("testData","data : "+url);
+        ((MyApplication)getApplication()).triggerNotification(MainActivity.class,"FIRST",remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getBody(),true,14, url);
 
     }
 

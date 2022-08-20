@@ -216,11 +216,13 @@ public class MainActivity extends AppCompatActivity {
         Log.w("READ_PERM = ",Manifest.permission.READ_EXTERNAL_STORAGE);
         Log.w("WRITE_PERM = ",Manifest.permission.WRITE_EXTERNAL_STORAGE);
         //Prevent the app from being started again when it is still alive in the background
+        Log.d("testUrl", "Direct here");
         if (!isTaskRoot()) {
+            Log.d("testUrl", "Cancelling out here");
             finish();
             return;
         }
-
+//        onNewIntent(getIntent());
         setContentView(R.layout.activity_main);
 
         swvp_view = findViewById(R.id.msw_view);
@@ -296,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setJavaScriptEnabled(SngineApp_JSCRIPT);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         swvp_view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -448,8 +451,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        Log.d("testUrll","path : before null check");
         if (getIntent().getData() != null) {
             String path     = getIntent().getDataString();
+            Log.d("testUrll","path : "+path);
             /*
             If you want to check or use specific directories or schemes or hosts
 
@@ -461,6 +466,7 @@ public class MainActivity extends AppCompatActivity {
             */
             aswm_view(path, false);
         }
+        Log.d("testUrll","path : after null check");
     }
 
     @Override
@@ -544,12 +550,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
 //            Toast.makeText(this,"Flag : "+url+" view : "+tab,Toast.LENGTH_SHORT).show();
-            if(url.contains("?")){ // check to see whether the url already has query parameters and handle appropriately.
-                url += "&";
-            } else {
-                url += "?";
-            }
-            url += "rid="+random_id();
+//            if(url.contains("?")){ // check to see whether the url already has query parameters and handle appropriately.
+//                url += "&";
+//            } else {
+//                url += "?";
+//            }
+//            url += "rid="+random_id();
             swvp_view.loadUrl(url);
         }
     }
@@ -646,7 +652,12 @@ public class MainActivity extends AppCompatActivity {
     //Getting device basic information
     public void get_info(){
         CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setAcceptCookie(true);
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            cookieManager.setAcceptThirdPartyCookies(swvp_view,true);
+        }else {
+            cookieManager.setAcceptCookie(true);
+        }
+        CookieManager.setAcceptFileSchemeCookies(true);
         cookieManager.setCookie(Sngine_URL, "DEVICE=android");
         cookieManager.setCookie(Sngine_URL, "DEV_API=" + Build.VERSION.SDK_INT);
     }
@@ -850,6 +861,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
         swvp_view.restoreState(savedInstanceState);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent == null) return;
+
+        String url = intent.getDataString();
+        Log.d("testUrl", "URL : "+url);
+        if (url != null)
+            swvp_view.loadUrl(url);
+//            url_actions(swvp_view,url);
+//            aswm_view(url,false);
     }
 }
 
