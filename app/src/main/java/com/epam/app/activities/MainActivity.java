@@ -222,6 +222,18 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
+        Intent intent = getIntent();
+        Log.d("testIntent", "intent : "+intent);
+        Bundle b = getIntent().getExtras();
+        Log.d("testIntent", "bundle : "+intent.getExtras());
+        Log.d("testIntent", "dataString : "+intent.getDataString());
+        String someData;
+        if (b!=null) {
+            someData = b.getString("key1");
+            Log.d("testIntentUrl", "url : "+someData);
+//            onNewIntent(getIntent());
+            Sngine_URL = someData;
+        }
 //        onNewIntent(getIntent());
         setContentView(R.layout.activity_main);
 
@@ -830,6 +842,7 @@ public class MainActivity extends AppCompatActivity {
                 if (swvp_view.canGoBack()) {
                     swvp_view.goBack();
                 } else {
+                    Sngine_URL = SngineConfig.Sngine_URL;
                     finish();
                 }
                 return true;
@@ -868,9 +881,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
+        Log.d("testIntent","here in onNewIntent()");
         if (intent == null) return;
-
         String url = intent.getDataString();
         Log.d("testUrl", "URL : "+url);
         if (url != null)
