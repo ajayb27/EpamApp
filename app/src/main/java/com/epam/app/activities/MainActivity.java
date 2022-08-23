@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     static boolean SngineApp_OFFLINE		= SngineConfig.SngineApp_OFFLINE;
     static boolean SngineApp_EXTURL		= SngineConfig.SngineApp_EXTURL;
 
+    static boolean Sngine_ClearHistory = false;
+
     //Security variables
     static boolean SngineApp_CERT_VERIFICATION = SngineConfig.SngineApp_CERT_VERIFICATION;
 
@@ -513,6 +515,11 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.msw_view).setVisibility(View.VISIBLE);
 
             swvp_progress = findViewById(R.id.msw_progress_outer);
+
+            if (Sngine_ClearHistory) {
+                swvp_view.clearHistory();
+                Sngine_ClearHistory = false;
+            }
 //
 //            CookieManager.getInstance().setAcceptCookie(true);
 //            CookieManager.getInstance().flush();
@@ -841,8 +848,13 @@ public class MainActivity extends AppCompatActivity {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 if (swvp_view.canGoBack()) {
                     swvp_view.goBack();
-                } else {
+                }
+                else if (Sngine_URL!=SngineConfig.Sngine_URL) {
                     Sngine_URL = SngineConfig.Sngine_URL;
+                    swvp_view.loadUrl(Sngine_URL);
+                    Sngine_ClearHistory = true;
+//                    swvp_view.clearHistory();
+                } else{
                     finish();
                 }
                 return true;
