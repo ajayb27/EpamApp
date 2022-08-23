@@ -502,6 +502,8 @@ public class MainActivity extends AppCompatActivity {
 
             swvp_progress = findViewById(R.id.msw_progress_outer);
 //
+//            CookieManager.getInstance().setAcceptCookie(true);
+//            CookieManager.getInstance().flush();
 //            Toast.makeText(MainActivity.this,"visibility : "+swvp_progress.getVisibility(),Toast.LENGTH_SHORT).show();
         }
         //For android below API 23
@@ -652,14 +654,14 @@ public class MainActivity extends AppCompatActivity {
     //Getting device basic information
     public void get_info(){
         CookieManager cookieManager = CookieManager.getInstance();
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
-            cookieManager.setAcceptThirdPartyCookies(swvp_view,true);
-        }else {
-            cookieManager.setAcceptCookie(true);
-        }
-        CookieManager.setAcceptFileSchemeCookies(true);
-        cookieManager.setCookie(Sngine_URL, "DEVICE=android");
-        cookieManager.setCookie(Sngine_URL, "DEV_API=" + Build.VERSION.SDK_INT);
+//        if (android.os.Build.VERSION.SDK_INT >= 21) {
+//            cookieManager.setAcceptThirdPartyCookies(swvp_view,true);
+//        }else {
+//            cookieManager.setAcceptCookie(true);
+//        }
+//        CookieManager.setAcceptFileSchemeCookies(true);
+//        cookieManager.setCookie(Sngine_URL, "DEVICE=android");
+//        cookieManager.setCookie(Sngine_URL, "DEV_API=" + Build.VERSION.SDK_INT);
     }
 
     //Checking permission for storage and camera for writing and uploading images

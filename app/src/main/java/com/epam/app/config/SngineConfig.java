@@ -43,13 +43,13 @@ public class SngineConfig {
     public static boolean SngineApp_ZOOM        = true;
 
     // save form cache and auto-fill information
-    public static boolean SngineApp_SFORM       = false;
+    public static boolean SngineApp_SFORM       = true;
 
     // whether the loading webpages are offline or online
     public static boolean SngineApp_OFFLINE     = false;
 
     // open external url with default browser instead of app webview
-    public static boolean SngineApp_EXTURL      = false;
+    public static boolean SngineApp_EXTURL      = true;
 
 
     /* -- SECURITY VARIABLES -- */

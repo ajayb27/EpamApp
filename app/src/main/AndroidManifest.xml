@@ -85,8 +85,7 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:exported="false"
-            android:launchMode="singleTop">
+            android:exported="false">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.VIEW" />-->
 <!--                <category android:name="android.intent.category.BROWSABLE" />-->
