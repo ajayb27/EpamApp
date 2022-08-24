@@ -36,6 +36,7 @@ import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -57,6 +58,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import com.epam.app.R;
+import com.epam.app.application.MyApplication;
 import com.epam.app.config.SngineConfig;
 import com.epam.app.utils.DetectConnection;
 import com.epam.app.utils.GPSTrack;
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int SELECTTEXT_MENU_ID = Menu.FIRST;
+    private JSBridge jsBridge;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -240,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         swvp_view = findViewById(R.id.msw_view);
+        jsBridge = new JSBridge();
 
 //		swvp_view.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_PASTE));
 
@@ -313,6 +317,9 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setDomStorageEnabled(true);
         webSettings.setJavaScriptEnabled(SngineApp_JSCRIPT);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        swvp_view.addJavascriptInterface(jsBridge,"JSBridge");
+
 
         swvp_view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -535,6 +542,10 @@ public class MainActivity extends AppCompatActivity {
         //Overriding webview URLs
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d("testLogin","curr url : "+CURR_URL+"\t URL : "+url);
+            if (CURR_URL.contains("login") && url.equalsIgnoreCase(Sngine_URL)) {
+                Log.d("testLogin","url : "+CURR_URL+"\t equal? : "+CURR_URL.equalsIgnoreCase(url));
+            }
             CURR_URL = url;
             return url_actions(view, url);
         }
@@ -543,6 +554,11 @@ public class MainActivity extends AppCompatActivity {
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            Log.d("testLogin","curr url : "+CURR_URL+"\t URL : "+request.getUrl().toString());
+            if (CURR_URL.contains("login") && request.getUrl().toString().equalsIgnoreCase(Sngine_URL)) {
+                Log.d("testLogin","url : "+CURR_URL+"\t equal? : "+CURR_URL.equalsIgnoreCase(request.getUrl().toString()));
+                jsBridge.sendDataToWebView();
+            }
             CURR_URL = request.getUrl().toString();
             return url_actions(view, request.getUrl().toString());
         }
@@ -554,6 +570,21 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 handler.proceed(); // Ignore SSL certificate errors
             }
+        }
+    }
+
+    private class JSBridge {
+
+        @JavascriptInterface
+        public void showMessageInNative(String message){
+            //Received message from webview in native, process data
+            Log.d("bigthing", "message  : "+message);
+        }
+        
+        public void sendDataToWebView(){
+            swvp_view.evaluateJavascript(
+                    "javascript: " +"updateFromNative(" + MyApplication.nKey +
+                            ")",null);
         }
     }
 
