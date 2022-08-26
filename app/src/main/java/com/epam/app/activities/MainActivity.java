@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -470,6 +471,12 @@ public class MainActivity extends AppCompatActivity {
                     // location permissions not granted so request them
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, loc_perm);
                 }
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                android.util.Log.d("testWebLogin", consoleMessage.message());
+                return true;
             }
         });
         Log.d("testUrll","path : before null check");
@@ -928,7 +935,7 @@ public class MainActivity extends AppCompatActivity {
         if (intent == null) return;
         String url = intent.getDataString();
         Log.d("testUrl", "URL : "+url);
-        if (url != null)
+        if (url != null  && !url.equalsIgnoreCase("null"))
             swvp_view.loadUrl(url);
 //            url_actions(swvp_view,url);
 //            aswm_view(url,false);

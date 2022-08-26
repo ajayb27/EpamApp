@@ -1,6 +1,7 @@
 package com.epam.app.application;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import com.epam.app.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class MyApplication extends Application {
 
@@ -78,7 +80,7 @@ public class MyApplication extends Application {
 
     }
 
-    public void triggerNotification(Class targetNotificationActivity, String channelId, String title, String text, String bigText, boolean autoCancel, int notificationId, String url) {
-        myNotificationManager.triggerNotification(targetNotificationActivity, channelId, title, text, bigText, autoCancel, notificationId, url);
+    public void triggerNotification(Class targetNotificationActivity, String channelId, String title, String text, String bigText, boolean autoCancel, int notificationId, String url, Bitmap result) {
+        myNotificationManager.triggerNotification(targetNotificationActivity, channelId, title, text, bigText, autoCancel, notificationId, url, result);
     }
 }
