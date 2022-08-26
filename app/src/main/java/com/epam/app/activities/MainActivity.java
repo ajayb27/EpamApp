@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setJavaScriptEnabled(SngineApp_JSCRIPT);
-        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT); 
 
         swvp_view.addJavascriptInterface(jsBridge,"JSBridge");
 
