@@ -562,8 +562,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             Log.d("testLogin","curr url : "+CURR_URL+"\t URL : "+request.getUrl().toString());
-            if (CURR_URL.contains("login") && request.getUrl().toString().equalsIgnoreCase(Sngine_URL)) {
-                Log.d("testLogin","url : "+CURR_URL+"\t equal? : "+CURR_URL.equalsIgnoreCase(request.getUrl().toString()));
+//            if (CURR_URL.contains("login") && request.getUrl().toString().equalsIgnoreCase(Sngine_URL)) {
+//                Log.d("testLogin","url : "+CURR_URL+"\t equal? : "+CURR_URL.equalsIgnoreCase(request.getUrl().toString()));
+//                jsBridge.sendDataToWebView();
+//            }
+            if (request.getUrl().toString().contains("login")) {
                 jsBridge.sendDataToWebView();
             }
             CURR_URL = request.getUrl().toString();
@@ -589,6 +592,7 @@ public class MainActivity extends AppCompatActivity {
         }
         
         public void sendDataToWebView(){
+            Log.d("bigthing", "message : "+MyApplication.nKey);
             swvp_view.evaluateJavascript(
                     "javascript: " +"updateFromNative(" + MyApplication.nKey +
                             ")",null);
@@ -711,14 +715,14 @@ public class MainActivity extends AppCompatActivity {
     //Getting device basic information
     public void get_info(){
         CookieManager cookieManager = CookieManager.getInstance();
-//        if (android.os.Build.VERSION.SDK_INT >= 21) {
-//            cookieManager.setAcceptThirdPartyCookies(swvp_view,true);
-//        }else {
-//            cookieManager.setAcceptCookie(true);
-//        }
-//        CookieManager.setAcceptFileSchemeCookies(true);
-//        cookieManager.setCookie(Sngine_URL, "DEVICE=android");
-//        cookieManager.setCookie(Sngine_URL, "DEV_API=" + Build.VERSION.SDK_INT);
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            cookieManager.setAcceptThirdPartyCookies(swvp_view,true);
+        }else {
+            cookieManager.setAcceptCookie(true);
+        }
+        CookieManager.setAcceptFileSchemeCookies(true);
+        cookieManager.setCookie(Sngine_URL, "DEVICE=android");
+        cookieManager.setCookie(Sngine_URL, "DEV_API=" + Build.VERSION.SDK_INT);
     }
 
     //Checking permission for storage and camera for writing and uploading images

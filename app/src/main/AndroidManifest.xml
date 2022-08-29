@@ -92,7 +92,7 @@
 <!--                <data android:scheme="http" />-->
 <!--            </intent-filter>-->
             <intent-filter>
-                <action android:name="ORDER_RECIEVED" />
+                <action android:name="NOTIFICATION_RECIEVED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
