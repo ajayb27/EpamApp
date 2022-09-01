@@ -87,6 +87,7 @@ public class MyApplication extends Application {
                         // Log and toast
 //                        String msg = getString(R.string.msg_token_fmt);
                         Log.d(TAG, token);
+                        nKey = token;
                     }
                 });
 

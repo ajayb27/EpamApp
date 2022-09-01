@@ -534,6 +534,10 @@ public class MainActivity extends AppCompatActivity {
                 swvp_view.clearHistory();
                 Sngine_ClearHistory = false;
             }
+
+            if (url.contains("login")) {
+                jsBridge.sendDataToWebView();
+            }
 //
 //            CookieManager.getInstance().setAcceptCookie(true);
 //            CookieManager.getInstance().flush();
@@ -562,13 +566,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             Log.d("testLogin","curr url : "+CURR_URL+"\t URL : "+request.getUrl().toString());
-//            if (CURR_URL.contains("login") && request.getUrl().toString().equalsIgnoreCase(Sngine_URL)) {
-//                Log.d("testLogin","url : "+CURR_URL+"\t equal? : "+CURR_URL.equalsIgnoreCase(request.getUrl().toString()));
-//                jsBridge.sendDataToWebView();
-//            }
-            if (request.getUrl().toString().contains("login")) {
-                jsBridge.sendDataToWebView();
-            }
             CURR_URL = request.getUrl().toString();
             return url_actions(view, request.getUrl().toString());
         }
@@ -592,10 +589,24 @@ public class MainActivity extends AppCompatActivity {
         }
         
         public void sendDataToWebView(){
-            Log.d("bigthing", "message : "+MyApplication.nKey);
-            swvp_view.evaluateJavascript(
-                    "javascript: " +"updateFromNative(" + MyApplication.nKey +
-                            ")",null);
+            Log.d("testWebLogin", "message : "+MyApplication.nKey);
+            String strFun = "javascript:" +"updateFromNative(\"" + MyApplication.nKey +
+                    "\")";
+            Log.d("testWebLogin",strFun);
+            swvp_view.evaluateJavascript(strFun
+                    ,new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String s) {
+                            returnDataFromJs(s);
+                        }
+                    });
+//            swvp_view.loadUrl("javascript:updateFromNative(+"+MyApplication.nKey+")");
+        }
+
+        public void returnDataFromJs(String data) {
+            // Do something with the result.
+            Log.d("testWebLogin","result : "+data);
+            Toast.makeText(MainActivity.this,"data : "+data,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -715,12 +726,14 @@ public class MainActivity extends AppCompatActivity {
     //Getting device basic information
     public void get_info(){
         CookieManager cookieManager = CookieManager.getInstance();
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             cookieManager.setAcceptThirdPartyCookies(swvp_view,true);
         }else {
             cookieManager.setAcceptCookie(true);
         }
-        CookieManager.setAcceptFileSchemeCookies(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            CookieManager.setAcceptFileSchemeCookies(true);
+        }
         cookieManager.setCookie(Sngine_URL, "DEVICE=android");
         cookieManager.setCookie(Sngine_URL, "DEV_API=" + Build.VERSION.SDK_INT);
     }
