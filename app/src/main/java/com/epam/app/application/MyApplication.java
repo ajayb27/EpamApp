@@ -42,6 +42,18 @@ public class MyApplication extends Application {
                     }
                 });
 
+        FirebaseMessaging.getInstance().subscribeToTopic("TRIAL_NOTIFY")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getString(R.string.msg_subscribe_failed);
+                        }
+                        Log.d(TAG, msg);
+                    }
+                });
+
         FirebaseMessaging.getInstance().subscribeToTopic("ORDERS")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

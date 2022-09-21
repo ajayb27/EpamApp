@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -80,17 +81,22 @@ public class MyNotificationManager {
                 .setAutoCancel(autoCancel)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setSound(notificationSound)
-                .setLargeIcon(bitmap)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
-                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null))
-                .setContentIntent(pendingIntent);
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_logo_mvk_foreground))
+                .setSmallIcon(R.mipmap.ic_logo_mvk_round);
 
-        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(R.mipmap.ic_logo_mvk_foreground);
-            builder.setColor(color);
-        } else {
-            builder.setSmallIcon(R.mipmap.ic_logo_mvk_foreground);
-        }
+        if (bigText!=null)
+                builder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
+        if (bitmap!=null)
+                builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null));
+
+        builder.setContentIntent(pendingIntent);
+
+//        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+//            builder.setSmallIcon(R.mipmap.ic_logo_mvk);
+//            builder.setColor(color);
+//        } else {
+//            builder.setSmallIcon(R.mipmap.ic_logo_mvk);
+//        }
 
         Log.d("testImage","trigger notification : "+bitmap);
         notificationManagerCompat.notify(notificationId,builder.build());
